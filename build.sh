@@ -5,7 +5,8 @@ GEN_DIR="$SCRIPT_DIR/gen"
 PROTO_DIR="$SCRIPT_DIR/opentelemetry/proto"
 CLASSES_DIR="$SCRIPT_DIR/classes"
 JAR_FILE="$SCRIPT_DIR/opentelemetry-proto.jar"
-OUT_DIR="$SCRIPT_DIR/../../lib"
+LIB_DIR="$SCRIPT_DIR/../../lib"
+IVYLIB_DIR="$SCRIPT_DIR/../../ivylib"
 
 echo "Ensuring that protoc is installed." 
 protoc --version
@@ -58,7 +59,7 @@ if [ $? -ne 0 ]; then
     echo "Error: Unable to create $CLASSES_DIR dir." >&2
     exit 1
 fi
-javac -d "$CLASSES_DIR" -cp "../ivylib/*" $(find "$GEN_DIR" -name "*.java")
+javac -d "$CLASSES_DIR" -cp "$IVYLIB_DIR/*" $(find "$GEN_DIR" -name "*.java")
 
 echo "Creating $JAR_FILE file."
 jar -cvf "$JAR_FILE" -C "$CLASSES_DIR" .
@@ -67,8 +68,8 @@ if [ ! -f "$JAR_FILE" ]; then
     exit 1
 fi
 
-echo "Copying $JAR_FILE into $OUT_DIR dir."
-cp "$JAR_FILE" "$OUT_DIR"
+echo "Copying $JAR_FILE into $LIB_DIR dir."
+cp "$JAR_FILE" "$LIB_DIR"
 
-echo "Done. Output written to $OUT_DIR/opentelemetry-proto.jar"
+echo "Done. Output written to $LIB_DIR/opentelemetry-proto.jar"
 
