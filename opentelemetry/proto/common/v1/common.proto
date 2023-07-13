@@ -75,3 +75,14 @@ message InstrumentationScope {
   repeated KeyValue attributes = 3;
   uint32 dropped_attributes_count = 4;
 }
+
+// Standard GRPC status.
+// Implements:
+// https://pkg.go.dev/google.golang.org/genproto/googleapis/rpc/status#Status
+// We need this type so that the JSON HTTP API can construct errors.
+message Status {
+  // https://grpc.github.io/grpc-java/javadoc/io/grpc/Status.Code.html
+  int32 code = 1;
+  string message = 2;
+  repeated AnyValue details = 3;
+}
