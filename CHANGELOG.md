@@ -2,24 +2,52 @@
 
 ## Unreleased
 
-Full list of differences found in [this compare](https://github.com/open-telemetry/opentelemetry-proto/compare/v0.19.0...main).
+Full list of differences found in [this compare](https://github.com/open-telemetry/opentelemetry-proto/compare/v1.0.0...main).
+
+## 1.0.0 - 2023-07-03
+
+Full list of differences found in [this compare](https://github.com/open-telemetry/opentelemetry-proto/compare/v0.20.0...v1.0.0).
+
+### Maturity
+ 
+* Add note about the possibility to have unstable components after 1.0.0 
+  [#489](https://github.com/open-telemetry/opentelemetry-proto/pull/489)
+* Add maturity JSON entry per package
+  [#490](https://github.com/open-telemetry/opentelemetry-proto/pull/490)
+
+## 0.20.0 - 2023-06-06
+
+Full list of differences found in [this compare](https://github.com/open-telemetry/opentelemetry-proto/compare/v0.19.0...v0.20.0).
 
 ### Maturity
 
-* Remove if no changes for this section before release.
+* Declare OTLP/JSON Stable.
+  [#436](https://github.com/open-telemetry/opentelemetry-proto/pull/436)
+  [#435](https://github.com/open-telemetry/opentelemetry-proto/pull/435)
+* Provide stronger symbolic stability guarantees.
+  [#432](https://github.com/open-telemetry/opentelemetry-proto/pull/432)
+* Clarify how additive changes are handled.
+  [#455](https://github.com/open-telemetry/opentelemetry-proto/pull/455)
 
 ### Changed
 
-* Remove if no changes for this section before release.
+* Change the exponential histogram boundary condition.
+  [#409](https://github.com/open-telemetry/opentelemetry-proto/pull/409)
+* Clarify behavior for empty/not present/invalid trace_id and span_id fields.
+  [#442](https://github.com/open-telemetry/opentelemetry-proto/pull/442)
+* Change the collector trace endpoint to /v1/traces.
+  [#449](https://github.com/open-telemetry/opentelemetry-proto/pull/449)
 
 ### Added
 
-* Introduce an optional `zero_threshold` field to `ExponentialHistogramDataPoint`.
-  [(#440)](https://github.com/open-telemetry/opentelemetry-proto/issues/440)
+* Introduce `zero_threshold` field to `ExponentialHistogramDataPoint`.
+  [#441](https://github.com/open-telemetry/opentelemetry-proto/pull/441)
+  [#453](https://github.com/open-telemetry/opentelemetry-proto/pull/453)
 
 ### Removed
 
-* Remove if no changes for this section before release.
+* Delete requirement to generate new trace/span id if an invalid id is received.
+  [#444](https://github.com/open-telemetry/opentelemetry-proto/pull/444)
 
 ## 0.19.0 - 2022-08-03
 

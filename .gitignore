@@ -21,3 +21,5 @@
 # Generated code
 /gen/
 /classes/
+
+node_modules

@@ -13,6 +13,9 @@ $(1)
 
 endef
 
+.PHONY: all
+all: gen-all markdown-link-check
+
 # Generate all implementations
 .PHONY: gen-all
 gen-all: gen-cpp gen-csharp gen-go gen-java gen-kotlin gen-objc gen-openapi gen-php gen-python gen-ruby
@@ -22,9 +25,10 @@ BUF_DOCKER ?= bufbuild/buf:1.7.0
 
 PROTOC := docker run --rm -u ${shell id -u} -v${PWD}:${PWD} -w${PWD} ${OTEL_DOCKER_PROTOBUF} --proto_path=${PWD}
 BUF := docker run --rm -v "${PWD}:/workspace" -w /workspace ${BUF_DOCKER}
-# When checking for protobuf breaking changes, check against the upstream repo's main branch.
+# When checking for protobuf breaking changes, check against the latest release tag
+LAST_RELEASE_TAG := $(shell git tag --sort=committerdate | tail -1)
 # Options are described in https://docs.buf.build/breaking/usage#git
-BUF_AGAINST ?= "https://github.com/open-telemetry/opentelemetry-proto.git"
+BUF_AGAINST ?= "https://github.com/open-telemetry/opentelemetry-proto.git\#tag=$(LAST_RELEASE_TAG)"
 
 PROTO_GEN_CPP_DIR ?= $(GENDIR)/cpp
 PROTO_GEN_CSHARP_DIR ?= $(GENDIR)/csharp
@@ -150,3 +154,14 @@ gen-ruby:
 .PHONY: breaking-change
 breaking-change:
 	$(BUF) breaking --against $(BUF_AGAINST) $(BUF_FLAGS)
+
+
+ALL_DOCS := $(shell find . -type f -name '*.md' -not -path './.github/*' -not -path './node_modules/*' | sort)
+
+.PHONY: markdown-link-check
+markdown-link-check:
+	@if ! npm ls markdown-link-check; then npm install; fi
+	@for f in $(ALL_DOCS); do \
+		npx --no -- markdown-link-check --quiet --config .markdown_link_check_config.json $$f \
+			|| exit 1; \
+	done

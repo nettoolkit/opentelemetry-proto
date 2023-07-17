@@ -88,6 +88,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
+    # breaking-change checks against last published release which is determined
+    # using the last published tag
+    - name: Get tags
+      run: git fetch --tags origin
     - name: Run make breaking-change with json output to annotate PR
       # Formats JSON output into Github workflow commands
       # https://docs.github.com/en/actions/using-workflows/workflow-commands-for-github-actions#setting-an-error-message
@@ -95,3 +99,15 @@ jobs:
         BUF_FLAGS="--error-format json" make -s breaking-change
         | jq -rs '.[] | "::error file=\(.path),line=\(.start_line),endLine=\(.end_line),title=Buf detected breaking change \(.type)::\(.message)"'
         ; (exit ${PIPESTATUS[0]})
+
+  markdown-link-check:
+    runs-on: ubuntu-latest
+    steps:
+    - name: check out code
+      uses: actions/checkout@v2
+
+    - name: install dependencies
+      run: npm install
+
+    - name: run markdown-link-check
+      run: make markdown-link-check
